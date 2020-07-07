@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/ui/screens/movie_details_screen.dart';
 
 class MoviesTabWidget extends StatelessWidget {
   final AsyncSnapshot snapshot;
@@ -8,7 +9,9 @@ class MoviesTabWidget extends StatelessWidget {
 
   void seeMore() {}
 
-  void cardMovieTap() {}
+  void cardMovieTap(BuildContext context) {
+    Navigator.pushNamed(context, MovieDetailsScreen.routeName);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +48,7 @@ class MoviesTabWidget extends StatelessWidget {
     Widget validSnapshot(int index) {
       if (snapshot.hasData) {
         return InkWell(
-          onTap: cardMovieTap,
+          onTap: () => cardMovieTap(context),
           child: Container(
             decoration: BoxDecoration(borderRadius: _borderRadius),
             width: _mQ.size.width * 0.4,

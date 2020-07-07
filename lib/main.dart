@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/ui/screens/home_screen.dart';
+import 'package:movies_app/ui/screens/movie_details_screen.dart';
 import 'package:movies_app/ui/screens/movies_tab_screen.dart';
 import 'package:movies_app/ui/screens/series_tab_screen.dart';
 import 'package:movies_app/util/HexColor.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         HomeScreen.routeName: (_) => HomeScreen(),
         MoviesTabScreen.routeName: (_) => MoviesTabScreen(),
         SeriesTabScreen.routeName: (_) => SeriesTabScreen(),
-        //PopularScreen.routeName: (_) => PopularScreen(),
+        MovieDetailsScreen.routeName: (_) => MovieDetailsScreen(),
       },
     );
   }
