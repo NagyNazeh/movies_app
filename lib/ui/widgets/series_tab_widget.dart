@@ -85,7 +85,13 @@ class SeriesTabWidget extends StatelessWidget {
           ),
         );
       } else if (snapshot.hasError) return Text('${snapshot.error}');
-      return CircularProgressIndicator();
+      return Container(
+        width: _mQ.size.width * 0.4,
+        height: _height * 0.8,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
     }
 
     return Container(

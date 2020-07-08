@@ -9,8 +9,12 @@ class MoviesTabWidget extends StatelessWidget {
 
   void seeMore() {}
 
-  void cardMovieTap(BuildContext context) {
-    Navigator.pushNamed(context, MovieDetailsScreen.routeName);
+  void cardMovieTap(BuildContext context, int idMovie, String titleMovie) {
+    Navigator.pushNamed(
+      context,
+      MovieDetailsScreen.routeName,
+      arguments: {'id': idMovie, 'title': titleMovie},
+    );
   }
 
   @override
@@ -48,7 +52,11 @@ class MoviesTabWidget extends StatelessWidget {
     Widget validSnapshot(int index) {
       if (snapshot.hasData) {
         return InkWell(
-          onTap: () => cardMovieTap(context),
+          onTap: () => cardMovieTap(
+            context,
+            snapshot.data.results[index].id,
+            snapshot.data.results[index].title,
+          ),
           child: Container(
             decoration: BoxDecoration(borderRadius: _borderRadius),
             width: _mQ.size.width * 0.4,
@@ -88,7 +96,13 @@ class MoviesTabWidget extends StatelessWidget {
           ),
         );
       } else if (snapshot.hasError) return Text('${snapshot.error}');
-      return CircularProgressIndicator();
+      return Container(
+        width: _mQ.size.width * 0.4,
+        height: _height * 0.8,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
     }
 
     return Container(
