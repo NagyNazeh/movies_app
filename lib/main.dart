@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/ui/screens/details_screen.dart';
 import 'package:movies_app/ui/screens/home_screen.dart';
-import 'package:movies_app/ui/screens/movie_details_screen.dart';
 import 'package:movies_app/ui/screens/movies_tab_screen.dart';
 import 'package:movies_app/ui/screens/series_tab_screen.dart';
 import 'package:movies_app/util/HexColor.dart';
@@ -30,6 +30,12 @@ class MyApp extends StatelessWidget {
             fontSize: 22,
             color: Colors.white,
           ),
+          // ignore: deprecated_member_use
+          body1: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 19,
+            color: Colors.greenAccent,
+          ),
         ),
       ),
       initialRoute: HomeScreen.routeName,
@@ -37,7 +43,7 @@ class MyApp extends StatelessWidget {
         HomeScreen.routeName: (_) => HomeScreen(),
         MoviesTabScreen.routeName: (_) => MoviesTabScreen(),
         SeriesTabScreen.routeName: (_) => SeriesTabScreen(),
-        MovieDetailsScreen.routeName: (_) => MovieDetailsScreen(),
+        DetailsScreen.routeName: (_) => DetailsScreen(),
       },
     );
   }

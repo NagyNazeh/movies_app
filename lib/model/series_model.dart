@@ -2,20 +2,20 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-class TopRatedSeries {
+class Series {
   int page;
   int totalResults;
   int totalPages;
   List<Results> results;
 
-  TopRatedSeries({
+  Series({
     this.page,
     this.totalResults,
     this.totalPages,
     this.results,
   });
 
-  TopRatedSeries.fromJson(Map<String, dynamic> json) {
+  Series.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     totalResults = json['total_results'];
     totalPages = json['total_pages'];
@@ -40,9 +40,9 @@ class TopRatedSeries {
 }
 
 class Results {
-  String originalName;
+  String originalTitle;
   List<int> genreIds;
-  String name;
+  String title;
   dynamic popularity;
   List<String> originCountry;
   int voteCount;
@@ -55,9 +55,9 @@ class Results {
   String posterPath;
 
   Results(
-      {this.originalName,
+      {this.originalTitle,
       this.genreIds,
-      this.name,
+      this.title,
       this.popularity,
       this.originCountry,
       this.voteCount,
@@ -70,9 +70,9 @@ class Results {
       this.posterPath});
 
   Results.fromJson(Map<String, dynamic> json) {
-    originalName = json['original_name'];
+    originalTitle = json['original_name'];
     genreIds = json['genre_ids'].cast<int>();
-    name = json['name'];
+    title = json['name'];
     popularity = json['popularity'];
     originCountry = json['origin_country'].cast<String>();
     voteCount = json['vote_count'];
@@ -87,9 +87,9 @@ class Results {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['original_name'] = this.originalName;
+    data['original_name'] = this.originalTitle;
     data['genre_ids'] = this.genreIds;
-    data['name'] = this.name;
+    data['name'] = this.title;
     data['popularity'] = this.popularity;
     data['origin_country'] = this.originCountry;
     data['vote_count'] = this.voteCount;
@@ -104,13 +104,37 @@ class Results {
   }
 }
 
-String _url =
+String _topRatedSeries =
     'https://api.themoviedb.org/3/tv/top_rated?api_key=69c460550e20df77b6d9d40422d53af1&language=en-US&page=1';
 
-Future<TopRatedSeries> getTopRatedSeries() async {
-  http.Response futurePost = await http.get(_url);
+Future<Series> getTopRatedSeries() async {
+  http.Response futurePost = await http.get(_topRatedSeries);
   if (futurePost.statusCode == 200) {
-    return TopRatedSeries.fromJson(json.decode(futurePost.body));
+    return Series.fromJson(json.decode(futurePost.body));
+  } else {
+    throw Exception('cant load');
+  }
+}
+
+String _popularSeries =
+    'https://api.themoviedb.org/3/tv/popular?api_key=69c460550e20df77b6d9d40422d53af1&language=en-US&page=1';
+
+Future<Series> getPopularSeries() async {
+  http.Response futurePost = await http.get(_popularSeries);
+  if (futurePost.statusCode == 200) {
+    return Series.fromJson(json.decode(futurePost.body));
+  } else {
+    throw Exception('cant load');
+  }
+}
+
+String _onAirSeries =
+    'https://api.themoviedb.org/3/tv/airing_today?api_key=69c460550e20df77b6d9d40422d53af1&language=en-US&page=1';
+
+Future<Series> getOnAirSeries() async {
+  http.Response futurePost = await http.get(_onAirSeries);
+  if (futurePost.statusCode == 200) {
+    return Series.fromJson(json.decode(futurePost.body));
   } else {
     throw Exception('cant load');
   }

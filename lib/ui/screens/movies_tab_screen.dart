@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/model/movies_popular_model.dart';
-import 'package:movies_app/model/movies_top_rated_model.dart';
-import 'package:movies_app/model/movies_up_coming_model.dart';
-import 'package:movies_app/ui/widgets/movies_tab_widget.dart';
+import 'package:movies_app/model/movies_model.dart';
+import 'package:movies_app/ui/widgets/card_widget.dart';
 
 class MoviesTabScreen extends StatefulWidget {
   static const routeName = '/movies-tab-screen';
@@ -12,9 +10,9 @@ class MoviesTabScreen extends StatefulWidget {
 }
 
 class _MoviesTabScreenState extends State<MoviesTabScreen> {
-  Future<PopularMovies> _dataPopular;
-  Future<TopRatedMovies> _dataTopRated;
-  Future<UpComingMovies> _dataUpComing;
+  Future<Movies> _dataPopular;
+  Future<Movies> _dataTopRated;
+  Future<Movies> _dataUpComing;
 
   @override
   void initState() {
@@ -30,22 +28,22 @@ class _MoviesTabScreenState extends State<MoviesTabScreen> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          FutureBuilder<PopularMovies>(
+          FutureBuilder<Movies>(
             future: _dataPopular,
             builder: (context, snapshot) {
-              return MoviesTabWidget(snapshot, 'Popular');
+              return CardWidget(snapshot, 'Popular', true);
             },
           ),
-          FutureBuilder<TopRatedMovies>(
+          FutureBuilder<Movies>(
             future: _dataTopRated,
             builder: (context, snapshot) {
-              return MoviesTabWidget(snapshot, 'Top Rated');
+              return CardWidget(snapshot, 'Top Rated', true);
             },
           ),
-          FutureBuilder<UpComingMovies>(
+          FutureBuilder<Movies>(
             future: _dataUpComing,
             builder: (context, snapshot) {
-              return MoviesTabWidget(snapshot, 'Up Coming');
+              return CardWidget(snapshot, 'Up Coming', true);
             },
           ),
         ],

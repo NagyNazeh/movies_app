@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/model/series_on_air_model.dart';
-import 'package:movies_app/model/series_popular_model.dart';
-import 'package:movies_app/model/series_top_rated_model.dart';
-import 'package:movies_app/ui/widgets/series_tab_widget.dart';
+import 'package:movies_app/model/series_model.dart';
+import 'package:movies_app/ui/widgets/card_widget.dart';
 
 class SeriesTabScreen extends StatefulWidget {
   static const routeName = '/series-tab-screen';
@@ -12,9 +10,9 @@ class SeriesTabScreen extends StatefulWidget {
 }
 
 class _SeriesTabScreenState extends State<SeriesTabScreen> {
-  Future<OnAirSeries> _dataOnAirSeries;
-  Future<PopularSeries> _dataPopularSeries;
-  Future<TopRatedSeries> _dataTopRatedSeries;
+  Future<Series> _dataOnAirSeries;
+  Future<Series> _dataPopularSeries;
+  Future<Series> _dataTopRatedSeries;
 
   @override
   void initState() {
@@ -30,22 +28,22 @@ class _SeriesTabScreenState extends State<SeriesTabScreen> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          FutureBuilder<OnAirSeries>(
+          FutureBuilder<Series>(
             future: _dataOnAirSeries,
             builder: (context, snapshot) {
-              return SeriesTabWidget(snapshot, 'On Air Today');
+              return CardWidget(snapshot, 'On Air Today', false);
             },
           ),
-          FutureBuilder<PopularSeries>(
+          FutureBuilder<Series>(
             future: _dataPopularSeries,
             builder: (context, snapshot) {
-              return SeriesTabWidget(snapshot, 'Popular');
+              return CardWidget(snapshot, 'Popular', false);
             },
           ),
-          FutureBuilder<TopRatedSeries>(
+          FutureBuilder<Series>(
             future: _dataTopRatedSeries,
             builder: (context, snapshot) {
-              return SeriesTabWidget(snapshot, 'Top Rated');
+              return CardWidget(snapshot, 'Top Rated', false);
             },
           ),
         ],

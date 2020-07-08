@@ -7,7 +7,7 @@ class MovieDetails {
   String backdropPath;
   Object belongsToCollection;
   int budget;
-  List<Genres> genres;
+  List<GenresMovies> genres;
   String homepage;
   int id;
   String imdbId;
@@ -63,9 +63,9 @@ class MovieDetails {
     belongsToCollection = json['belongs_to_collection'];
     budget = json['budget'];
     if (json['genres'] != null) {
-      genres = new List<Genres>();
+      genres = new List<GenresMovies>();
       json['genres'].forEach((v) {
-        genres.add(new Genres.fromJson(v));
+        genres.add(new GenresMovies.fromJson(v));
       });
     }
     homepage = json['homepage'];
@@ -147,13 +147,13 @@ class MovieDetails {
   }
 }
 
-class Genres {
+class GenresMovies {
   int id;
   String name;
 
-  Genres({this.id, this.name});
+  GenresMovies({this.id, this.name});
 
-  Genres.fromJson(Map<String, dynamic> json) {
+  GenresMovies.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
   }

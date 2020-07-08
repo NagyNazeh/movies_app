@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/ui/screens/movie_details_screen.dart';
+import 'package:movies_app/ui/screens/details_screen.dart';
 
-class MoviesTabWidget extends StatelessWidget {
+class CardWidget extends StatelessWidget {
   final AsyncSnapshot snapshot;
   final String title;
+  final bool isMovie;
 
-  MoviesTabWidget(this.snapshot, this.title);
+  CardWidget(this.snapshot, this.title, this.isMovie);
 
   void seeMore() {}
 
-  void cardMovieTap(BuildContext context, int idMovie, String titleMovie) {
+  void cardTap(BuildContext context, int id, String title, bool isMovie) {
     Navigator.pushNamed(
       context,
-      MovieDetailsScreen.routeName,
-      arguments: {'id': idMovie, 'title': titleMovie},
+      DetailsScreen.routeName,
+      arguments: {'id': id, 'title': title, 'isMovie': isMovie},
     );
   }
 
@@ -38,11 +39,7 @@ class MoviesTabWidget extends StatelessWidget {
             child: Text(
               'See More',
               // ignore: deprecated_member_use
-              style: _tO.textTheme.title.copyWith(
-                fontSize: 18,
-                fontStyle: FontStyle.italic,
-                color: Colors.greenAccent,
-              ),
+              style: _tO.textTheme.body1,
             ),
             onTap: seeMore,
           ),
@@ -52,10 +49,11 @@ class MoviesTabWidget extends StatelessWidget {
     Widget validSnapshot(int index) {
       if (snapshot.hasData) {
         return InkWell(
-          onTap: () => cardMovieTap(
+          onTap: () => cardTap(
             context,
             snapshot.data.results[index].id,
             snapshot.data.results[index].title,
+            isMovie,
           ),
           child: Container(
             decoration: BoxDecoration(borderRadius: _borderRadius),
