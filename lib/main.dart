@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/ui/screens/details_screen.dart';
+import 'package:movies_app/ui/screens/grid_view_screen.dart';
 import 'package:movies_app/ui/screens/home_screen.dart';
 import 'package:movies_app/ui/screens/movies_tab_screen.dart';
 import 'package:movies_app/ui/screens/series_tab_screen.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         MoviesTabScreen.routeName: (_) => MoviesTabScreen(),
         SeriesTabScreen.routeName: (_) => SeriesTabScreen(),
         DetailsScreen.routeName: (_) => DetailsScreen(),
+        GridViewScreen.routeName: (_) => GridViewScreen(),
       },
     );
   }

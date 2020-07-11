@@ -41,7 +41,6 @@ class _DetailsWidgetState extends State<DetailsWidget> {
       _seriesDetails = getSeriesDetails(_id);
       _recommendationsSeries = getRecommendationsSeries(_id);
     }
-    //_dataRecommendations = getRecommendationsMovies(_id);
   }
 
   String getGenresMovie(List<GenresMovies> g) {

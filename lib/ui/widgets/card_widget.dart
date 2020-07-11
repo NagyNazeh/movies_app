@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/ui/screens/details_screen.dart';
+import 'package:movies_app/ui/screens/grid_view_screen.dart';
+import 'package:movies_app/ui/widgets/card_item_widget.dart';
 
 class CardWidget extends StatelessWidget {
   final AsyncSnapshot snapshot;
@@ -8,13 +9,11 @@ class CardWidget extends StatelessWidget {
 
   CardWidget(this.snapshot, this.title, this.isMovie);
 
-  void seeMore() {}
-
-  void cardTap(BuildContext context, int id, String title, bool isMovie) {
+  void seeMore(BuildContext context) {
     Navigator.pushNamed(
       context,
-      DetailsScreen.routeName,
-      arguments: {'id': id, 'title': title, 'isMovie': isMovie},
+      GridViewScreen.routeName,
+      arguments: {'title': title, 'snapshot': snapshot, 'isMovie': isMovie},
     );
   }
 
@@ -22,8 +21,7 @@ class CardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final _mQ = MediaQuery.of(context);
     final _tO = Theme.of(context);
-    final _height = _mQ.size.height * 0.45;
-    final _image = 'https://image.tmdb.org/t/p/w500';
+    final _height = _mQ.size.height * 0.50;
     final _borderRadius = BorderRadius.circular(20);
     final _rowTitle = Container(
       height: _height * 0.1,
@@ -41,57 +39,17 @@ class CardWidget extends StatelessWidget {
               // ignore: deprecated_member_use
               style: _tO.textTheme.body1,
             ),
-            onTap: seeMore,
+            onTap: () => seeMore(context),
           ),
         ],
       ),
     );
     Widget validSnapshot(int index) {
       if (snapshot.hasData) {
-        return InkWell(
-          onTap: () => cardTap(
-            context,
-            snapshot.data.results[index].id,
-            snapshot.data.results[index].title,
-            isMovie,
-          ),
-          child: Container(
-            decoration: BoxDecoration(borderRadius: _borderRadius),
-            width: _mQ.size.width * 0.4,
-            height: _height * 0.8,
-            child: Card(
-              color: _tO.primaryColorLight,
-              shape: RoundedRectangleBorder(borderRadius: _borderRadius),
-              clipBehavior: Clip.hardEdge,
-              child: Stack(
-                alignment: Alignment.topRight,
-                children: <Widget>[
-                  Image.network(
-                    '$_image${snapshot.data.results[index].posterPath}',
-                    fit: BoxFit.cover,
-                  ),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      Icon(
-                        Icons.star,
-                        color: Colors.greenAccent,
-                        size: 70,
-                      ),
-                      Text(
-                        snapshot.data.results[index].voteAverage.toString(),
-                        style: TextStyle(
-                          color: _tO.primaryColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+        return Container(
+          width: _mQ.size.width * 0.4,
+          height: _height * 0.8,
+          child: CardItemWidget(snapshot, index, isMovie),
         );
       } else if (snapshot.hasError) return Text('${snapshot.error}');
       return Container(
@@ -107,9 +65,7 @@ class CardWidget extends StatelessWidget {
       width: _mQ.size.width,
       height: _height,
       padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: _tO.primaryColorLight,
-      ),
+      decoration: BoxDecoration(color: _tO.primaryColorLight),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,6 +83,7 @@ class CardWidget extends StatelessWidget {
               },
             ),
           ),
+          // Divider(color: Colors.white,),
         ],
       ),
     );

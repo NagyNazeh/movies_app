@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movies_app/model/movies_model.dart';
 import 'package:movies_app/ui/widgets/card_widget.dart';
@@ -27,6 +28,7 @@ class _MoviesTabScreenState extends State<MoviesTabScreen> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           FutureBuilder<Movies>(
             future: _dataPopular,

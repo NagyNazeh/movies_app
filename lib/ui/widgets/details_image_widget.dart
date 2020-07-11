@@ -9,8 +9,10 @@ class DetailsImageWidget extends StatelessWidget {
   String imagePath() {
     if (snapshot.data.backdropPath != null)
       return snapshot.data.backdropPath;
-    else
+    else if (snapshot.data.posterPath != null)
       return snapshot.data.posterPath;
+    else
+      return '/1RNeizGR78KuShMEE8rAyTXooAI.jpg';
   }
 
   @override
