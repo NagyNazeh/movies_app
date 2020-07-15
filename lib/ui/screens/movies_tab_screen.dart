@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movies_app/model/movies_model.dart';
 import 'package:movies_app/ui/widgets/card_widget.dart';

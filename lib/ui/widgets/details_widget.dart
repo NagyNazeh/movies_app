@@ -15,31 +15,43 @@ class DetailsWidget extends StatefulWidget {
   DetailsWidget(this.id, this.title, this.isMovie);
 
   @override
-  _DetailsWidgetState createState() => _DetailsWidgetState(id, title, isMovie);
+  _DetailsWidgetState createState() => _DetailsWidgetState();
 }
 
 class _DetailsWidgetState extends State<DetailsWidget> {
-  final _id;
-  final _title;
-  final _isMovie;
-
-  _DetailsWidgetState(this._id, this._title, this._isMovie);
-
   Future<MovieDetails> _movieDetails;
   Future<SeriesDetails> _seriesDetails;
   Future<RecommendationsMovies> _recommendationsMovies;
   Future<RecommendationsSeries> _recommendationsSeries;
+  bool isRecommendations = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (_isMovie) {
-      _movieDetails = getMovieDetails(_id);
-      _recommendationsMovies = getRecommendationsMovies(_id);
+    if (widget.isMovie) {
+      _movieDetails = getMovieDetails(widget.id);
+      _recommendationsMovies = getRecommendationsMovies(widget.id);
+      _recommendationsMovies.then((value) {
+        if (value.results.isNotEmpty && value.results.length > 11) {
+          setState(() {
+            isRecommendations = true;
+          });
+          return true;
+        } else
+          return true;
+      });
     } else {
-      _seriesDetails = getSeriesDetails(_id);
-      _recommendationsSeries = getRecommendationsSeries(_id);
+      _seriesDetails = getSeriesDetails(widget.id);
+      _recommendationsSeries = getRecommendationsSeries(widget.id);
+      _recommendationsSeries.then((value) {
+        if (value.results.isNotEmpty && value.results.length > 11) {
+          setState(() {
+            isRecommendations = true;
+          });
+        }
+        return true;
+      });
     }
   }
 
@@ -69,7 +81,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
         color: tO.primaryColorLight,
         child: Column(
           children: <Widget>[
-            DetailsImageWidget(snapshot, _isMovie),
+            DetailsImageWidget(snapshot, widget.isMovie, widget.id),
             Container(
               height: (mQ.size.height * 0.7) -
                   appBar.preferredSize.height -
@@ -81,7 +93,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      DetailsInfoWidget(snapshot, _isMovie),
+                      DetailsInfoWidget(snapshot, widget.isMovie),
                       Divider(color: Colors.white),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +104,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                             style: tO.textTheme.title,
                           ),
                           Expanded(
-                            child: _isMovie
+                            child: widget.isMovie
                                 ? Text(
                                     getGenresMovie(snapshot.data.genres),
                                     // ignore: deprecated_member_use
@@ -126,21 +138,25 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                         ],
                       ),
                       Divider(color: Colors.white),
-                      _isMovie
-                          ? FutureBuilder<RecommendationsMovies>(
-                              future: _recommendationsMovies,
-                              builder: (context, snapshot) {
-                                return CardWidget(
-                                    snapshot, 'Recommendations', true);
-                              },
-                            )
-                          : FutureBuilder<RecommendationsSeries>(
-                              future: _recommendationsSeries,
-                              builder: (context, snapshot) {
-                                return CardWidget(
-                                    snapshot, 'Recommendations', false);
-                              },
-                            ),
+                      widget.isMovie
+                          ? isRecommendations
+                              ? FutureBuilder<RecommendationsMovies>(
+                                  future: _recommendationsMovies,
+                                  builder: (context, snapshot) {
+                                    return CardWidget(
+                                        snapshot, 'Recommendations', true);
+                                  },
+                                )
+                              : Padding(padding: const EdgeInsets.all(0))
+                          : isRecommendations
+                              ? FutureBuilder<RecommendationsSeries>(
+                                  future: _recommendationsSeries,
+                                  builder: (context, snapshot) {
+                                    return CardWidget(
+                                        snapshot, 'Recommendations', false);
+                                  },
+                                )
+                              : Padding(padding: const EdgeInsets.all(0)),
                     ],
                   ),
                 ),
@@ -149,17 +165,18 @@ class _DetailsWidgetState extends State<DetailsWidget> {
           ],
         ),
       );
-    } else if (snapshot.hasError) return Text('${snapshot.error} $_isMovie');
+    } else if (snapshot.hasError)
+      return Text('${snapshot.error} $widget.isMovie');
     return Center(child: CircularProgressIndicator());
   }
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(title: Text(_title));
+    final appBar = AppBar(title: Text(widget.title));
     return Scaffold(
       appBar: appBar,
       body: Container(
-        child: _isMovie
+        child: widget.isMovie
             ? FutureBuilder<MovieDetails>(
                 future: _movieDetails,
                 builder: (context, snapshot) {
